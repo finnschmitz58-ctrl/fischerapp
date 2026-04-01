@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fischer App - Kostenlose Angler Community</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <h1><i class="fas fa-fish"></i> Finn`s Fischer App</h1>
+                <p>Deine Premium Angler Community - Kostenlos!</p>
+            </div>
+            <nav class="header-nav">
+                <a href="#add-catch" class="nav-link"><i class="fas fa-trophy"></i> Meine Fänge</a>
+                <a href="#ai-chat" class="nav-link"><i class="fas fa-robot"></i> KI-Chat</a>
+                <a href="#map-section" class="nav-link"><i class="fas fa-map"></i> Karte</a>
+                <a href="https://www.fischer-vereinigung.ch" target="_blank" class="nav-link nav-external"><i class="fas fa-external-link-alt"></i> Fischer-Vereinigung</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>Willkommen zur Fischer App</h2>
+                <p>Entdecke die besten Fangplätze, teile deine Fänge und werde Teil einer Angler-Community</p>
+                
+                <!-- Fischer-Vereinigung Grußbox -->
+                <div class="fischer-vereinigung-box">
+                    <i class="fas fa-heart" style="color: #ff6f00;"></i>
+                    <p><strong>Mit freundlichen Grüßen an die</strong></p>
+                    <p style="font-size: 1.3em; color: #ff6f00; margin: 5px 0;"><strong>Fischer-Vereinigung Schweiz</strong></p>
+                    <a href="https://www.fischer-vereinigung.ch" target="_blank" class="fischer-link">
+                        <i class="fas fa-globe"></i> www.fischer-vereinigung.ch
+                    </a>
+                    <p style="font-size: 0.85em; margin-top: 10px;">Gemeinsam für nachhaltige Fischerei!</p>
+                </div>
+
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="document.getElementById('ai-chat').scrollIntoView({behavior: 'smooth'})">
+                        <i class="fas fa-comments"></i> Frag die KI
+                    </button>
+                    <button class="btn-secondary" onclick="document.getElementById('map-section').scrollIntoView({behavior: 'smooth'})">
+                        <i class="fas fa-map-location-dot"></i> Fangplätze finden
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image" style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=400&fit=crop');">
+            </div>
+        </section>
+
+        <!-- AI CHAT SECTION -->
+        <section id="ai-chat" class="ai-chat-section">
+            <div class="section-header">
+                <i class="fas fa-robot"></i>
+                <h2>🤖 KI Angel-Berater</h2>
+                <p>Frag deinen persönlichen Angler-Experten alles über dein Heimat-Gewässer</p>
+            </div>
+            <div class="chat-wrapper">
+                <div id="chat-container" class="chat-container">
+                    <div id="chat-messages" class="chat-messages"></div>
+                </div>
+                <form id="chat-form" class="chat-input-form">
+                    <input 
+                        type="text" 
+                        id="chat-input" 
+                        class="chat-input"
+                        placeholder="z.B. Wie fange ich Hechte am Bodensee? Was ist die beste Ausrüstung?..."
+                        required
+                    >
+                    <button type="submit" class="btn-send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- FÄNGE SECTION -->
+        <section id="add-catch" class="add-catch-section">
+            <div class="section-header">
+                <i class="fas fa-plus-circle"></i>
+                <h2>Neuen Fang Hinzufügen</h2>
+                <p>Teile deinen erfolgreichen Fang mit der Community</p>
+            </div>
+            <div class="form-container">
+                <form id="catch-form" class="catch-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fish-type"><i class="fas fa-fish"></i> Fischart:</label>
+                            <input type="text" id="fish-type" placeholder="z.B. Hecht, Forelle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fish-size"><i class="fas fa-ruler"></i> Größe (cm):</label>
+                            <input type="number" id="fish-size" placeholder="50" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location"><i class="fas fa-map-pin"></i> Standort:</label>
+                            <input type="text" id="location" placeholder="z.B. Bodensee, Nord-Ufer" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo"><i class="fas fa-image"></i> Foto (URL):</label>
+                            <input type="url" id="photo" placeholder="https://...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary btn-full">
+                        <i class="fas fa-check"></i> Fang hinzufügen
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- MEINE FÄNGE SECTION -->
+        <section id="my-catches" class="my-catches-section">
+            <div class="section-header">
+                <i class="fas fa-trophy"></i>
+                <h2>Meine Fänge</h2>
+                <p>Deine erfolgreichsten Momente</p>
+            </div>
+            <div id="catches" class="catches-grid"></div>
+        </section>
+
+        <!-- GLOBALE ORTE SECTION -->
+        <section id="fish-locations-section" class="global-locations-section">
+            <div class="section-header">
+                <i class="fas fa-globe"></i>
+                <h2>🌍 Fangplätze Weltweit</h2>
+                <p>Entdecke die besten Angelplätze auf der ganzen Welt</p>
+            </div>
+            <div class="form-container">
+                <form id="fish-locations-form" class="search-form">
+                    <div class="form-group">
+                        <label for="fish-type-global"><i class="fas fa-fish"></i> Fischart:</label>
+                        <input type="text" id="fish-type-global" placeholder="z.B. Hecht, Forelle, Karpfen" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-search"></i> Suchen
+                    </button>
+                </form>
+            </div>
+            <div id="locations-list" class="locations-grid"></div>
+            <div id="map-global" class="map-global" style="display: none;"></div>
+        </section>
+
+        <!-- EINZELNEN SEE SUCHEN -->
+        <section id="map-section" class="map-section">
+            <div class="section-header">
+                <i class="fas fa-map"></i>
+                <h2>🎣 Fangplätze an deinem See</h2>
+                <p>Finde die besten Spots für deinen Lieblings-See</p>
+            </div>
+            <div class="form-container">
+                <form id="map-form" class="search-form">
+                    <div class="form-group">
+                        <label for="lake-name"><i class="fas fa-water"></i> See-Name:</label>
+                        <input type="text" id="lake-name" placeholder="z.B. Bodensee, Lake Michigan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fish-type-search"><i class="fas fa-fish"></i> Fischart:</label>
+                        <input type="text" id="fish-type-search" placeholder="z.B. Hecht, Forelle" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-search"></i> Fangplätze finden
+                    </button>
+                </form>
+            </div>
+            <div id="map" class="map-container"></div>
+        </section>
+
+        <!-- COMMUNITY SPOTS SECTION -->
+        <section id="community-spots-section" class="community-spots-section">
+            <div class="section-header">
+                <i class="fas fa-users"></i>
+                <h2>👥 Community Fangplätze</h2>
+                <p>Von Anglern für Angler - Entdecke die besten Geheimtipps der Community</p>
+            </div>
+            <div class="form-container">
+                <form id="community-filter-form" class="search-form">
+                    <div class="form-group">
+                        <label for="community-lake"><i class="fas fa-water"></i> See-Name (optional):</label>
+                        <input type="text" id="community-lake" placeholder="z.B. Bodensee">
+                    </div>
+                    <div class="form-group">
+                        <label for="community-fish"><i class="fas fa-fish"></i> Fischart (optional):</label>
+                        <input type="text" id="community-fish" placeholder="z.B. Hecht">
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-filter"></i> Filtern
+                    </button>
+                </form>
+            </div>
+            <div id="community-spots-list" class="community-spots-grid"></div>
+        </section>
+
+        <!-- EIGENE SPOTS HINZUFÜGEN -->
+        <section id="add-spot-section" class="add-spot-section">
+            <div class="section-header">
+                <i class="fas fa-star"></i>
+                <h2>⭐ Deine Geheimen Fangplätze</h2>
+                <p>Teile deine besten Spots mit anderen Anglern - Werde Teil der Community!</p>
+            </div>
+            <div class="form-container">
+                <form id="add-spot-form" class="spot-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="spot-lake"><i class="fas fa-water"></i> See-Name:</label>
+                            <input type="text" id="spot-lake" placeholder="z.B. Bodensee" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="spot-fish"><i class="fas fa-fish"></i> Fischart:</label>
+                            <input type="text" id="spot-fish" placeholder="z.B. Hecht" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="spot-name"><i class="fas fa-map-pin"></i> Platz-Name:</label>
+                            <input type="text" id="spot-name" placeholder="z.B. Nördliche Bucht" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="spot-latitude"><i class="fas fa-location-dot"></i> Breitengrad:</label>
+                            <input type="number" id="spot-latitude" step="0.0001" placeholder="47.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="spot-longitude"><i class="fas fa-location-dot"></i> Längengrad:</label>
+                            <input type="number" id="spot-longitude" step="0.0001" placeholder="9.5" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="spot-description"><i class="fas fa-pen"></i> Beschreibung:</label>
+                        <textarea id="spot-description" placeholder="Warum ist dieser Platz so gut? Was macht ihn besonders?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="spot-username"><i class="fas fa-user"></i> Dein Name (für die Community):</label>
+                        <input type="text" id="spot-username" placeholder="z.B. Max" required>
+                    </div>
+                    <button type="submit" class="btn-primary btn-full">
+                        <i class="fas fa-star"></i> Spot mit Community teilen
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-fish"></i> Finn's Fischer App</h3>
+                <p>Deine Plattform für Angler und Angelfreunde</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#ai-chat">KI-Chat</a></li>
+                    <li><a href="#map-section">Karte</a></li>
+                    <li><a href="#fish-locations-section">Orte</a></li>
+                    <li><a href="#community-spots-section">Community Spots</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Partner</h4>
+                <p><a href="https://www.fischer-vereinigung.ch" target="_blank" style="color: var(--secondary-color); text-decoration: underline;">
+                    <i class="fas fa-external-link-alt"></i> Fischer-Vereinigung Schweiz
+                </a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Community</h4>
+                <p>Teile deine Fänge und lerne von anderen Anglern!</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Finn's Fischer App - Alle Rechte vorbehalten | Erstellt für Angler, von Anglern</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Mit freundlichen Grüßen an die <a href="https://www.fischer-vereinigung.ch" target="_blank" style="color: var(--secondary-color);">Fischer-Vereinigung Schweiz</a></p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
